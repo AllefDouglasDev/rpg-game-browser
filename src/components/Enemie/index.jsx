@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
 import { Creators } from '../../store/ducks/enemies'
 import { DIRECTION, SPRITE_SIZE } from '../../utils/constants'
-import { useRef } from 'react'
+import { getNewPosition } from '../../features/Move'
 
 export default function Enemie({
   id,
@@ -12,7 +12,9 @@ export default function Enemie({
   initialPosition,
   vertical = false,
   animationTime = 300,
+  offset = { top: 0, left: 0 }
 }) {
+  const mounted = useRef(false)
   const direction = useRef(vertical ? DIRECTION.DOWN : DIRECTION.RIGHT)
   const [facing, setFacing] = useState({ 
     current: vertical ? DIRECTION.DOWN : DIRECTION.RIGHT, 
@@ -24,12 +26,19 @@ export default function Enemie({
   const store = useStore()
   const enemies = useSelector(state => state.enemies)
 
-  const offset = { top: 0, left: 0 }
-
   useEffect(() => {
-    setInterval(() => {
-      handleMove(direction.current)
+    mounted.current = true
+
+    const interval = setInterval(() => {
+      if (mounted.current) {
+        handleMove(direction.current)
+      }
     }, animationTime)
+
+    return () => {
+      clearInterval(interval)
+      mounted.current = false
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -65,33 +74,6 @@ export default function Enemie({
       current: direction,
       previous: prevState.current
     }))
-  }
-
-  function getNewPosition(position, direction) {
-    switch (direction) {
-      case DIRECTION.DOWN:
-        return {
-          top: position.top + SPRITE_SIZE,
-          left: position.left,
-        }
-      case DIRECTION.UP:
-        return {
-          top: position.top - SPRITE_SIZE,
-          left: position.left,
-        }
-      case DIRECTION.RIGHT:
-        return {
-          top: position.top,
-          left: position.left + SPRITE_SIZE,
-        }
-      case DIRECTION.LEFT:
-        return {
-          top: position.top,
-          left: position.left - SPRITE_SIZE,
-        }
-      default:
-        return position
-    }
   }
 
   return (

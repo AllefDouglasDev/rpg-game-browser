@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { Creators } from '../../store/ducks/enemies'
 import { SPRITE_SIZE, SCREEN_SIZE } from '../../utils/constants'
-import { tiles, enemies } from '../../maps/1'
 import { enemies as enemiesAssets } from '../../assets'
 
 import MapRow from './MapRow'
@@ -12,14 +11,18 @@ import Character from '../Character'
 import Enemie from '../Enemie'
 
 export default function Map() {
-
   const dispatch = useDispatch()
-
   const enemiesLength = useSelector(state => state.enemies.length)
+  const { mapId } = useSelector(state => state.map)
+
+  const { tiles, enemies } = require(`../../maps/${mapId}`)
 
   useEffect(() => {
+    console.log('map id mudou')
+    console.log('lista de inimigos', enemiesLength)
     dispatch(Creators.setEnemies(enemies))
-  }, [dispatch])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mapId])
 
   return (
     <div
@@ -42,6 +45,8 @@ export default function Map() {
           maxStep={enemie.maxStep}
           sprite={enemiesAssets[enemie.name]}
           vertical={enemie.vertical}
+          offset={enemie.offset}
+          animationTime={enemie.animationTime}
         />
       ))}
 

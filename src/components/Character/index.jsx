@@ -11,7 +11,7 @@ export default function Character() {
 
   const { position } = useSelector(state => state.character)
 
-  const offset = { top: 0, left: 0 }
+  const offset = { top: 0, left: SPRITE_SIZE * 6 }
 
   useEffect(() => {
     if (facing.current === facing.previous) {
