@@ -5,13 +5,15 @@ import { character } from '../../assets'
 import { SPRITE_SIZE, DIRECTION, MAX_STEP } from '../../utils/constants'
 import Move from '../../features/Move'
 
-export default function Character() {
-  const [facing, setFacing] = useState({ current: DIRECTION.DOWN, previous: DIRECTION.DOWN })
+export default function Character({
+  offset = { top: 0, left: 0 },
+  initialFacing = { current: DIRECTION.DOWN, previous: DIRECTION.DOWN }
+}) {
+  const [facing, setFacing] = useState(initialFacing)
   const [step, setStep] = useState(0)
 
   const { position } = useSelector(state => state.character)
-
-  const offset = { top: 0, left: SPRITE_SIZE * 6 }
+  const { mapId } = useSelector(state => state.map)
 
   useEffect(() => {
     if (facing.current === facing.previous) {
@@ -20,6 +22,10 @@ export default function Character() {
       setStep(0)
     }
   }, [facing])
+
+  useEffect(() => {
+    setFacing(initialFacing)
+  }, [mapId])
 
   function handleKeydown(direction) {
     setFacing(prevState => ({

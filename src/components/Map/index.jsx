@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { Creators } from '../../store/ducks/enemies'
-import { SPRITE_SIZE, SCREEN_SIZE } from '../../utils/constants'
+import { SPRITE_SIZE, SCREEN_SIZE, DIRECTION } from '../../utils/constants'
 import { enemies as enemiesAssets } from '../../assets'
 
 import MapRow from './MapRow'
@@ -18,11 +18,29 @@ export default function Map() {
   const { tiles, enemies } = require(`../../maps/${mapId}`)
 
   useEffect(() => {
-    console.log('map id mudou')
-    console.log('lista de inimigos', enemiesLength)
     dispatch(Creators.setEnemies(enemies))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mapId])
+
+  function getCharacterInitialFacing() {
+    let initialFacing = DIRECTION.DOWN
+    
+    switch (mapId) {
+      case 1:
+        initialFacing = DIRECTION.DOWN
+        break
+      case 2:
+        initialFacing = DIRECTION.RIGHT
+        break
+      case 3:
+        initialFacing = DIRECTION.DOWN
+        break
+      default:
+        initialFacing = DIRECTION.DOWN
+    }
+
+    return { current: initialFacing, previous: initialFacing }
+  }
 
   return (
     <div
@@ -36,7 +54,8 @@ export default function Map() {
       }}
     >
       {tiles.map((row, i) => <MapRow key={i} row={row}/>)}
-      <Character />
+
+      <Character initialFacing={getCharacterInitialFacing()}/>
 
       {enemiesLength > 0 && enemies.map((enemie, id) => (
         <Enemie
@@ -49,19 +68,6 @@ export default function Map() {
           animationTime={enemie.animationTime}
         />
       ))}
-
-      {/* <Enemie
-        initialPosition={{ top: SPRITE_SIZE * 5, left: SPRITE_SIZE * 7 }}
-        maxStep={3}
-        sprite={enemiesAssets.lpcwanddemo}
-        vertical
-      /> */}
-
-      {/* <Enemie
-        initialPosition={{ top: SPRITE_SIZE * 7, left: SPRITE_SIZE * 9 }}
-        maxStep={4}
-        sprite={enemiesAssets.bat}
-      /> */}
     </div>
   )
 }

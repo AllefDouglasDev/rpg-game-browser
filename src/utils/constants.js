@@ -11,6 +11,8 @@ const DIRECTION = {
 
 const MAX_STEP = 3
 
+const MAPS_SIZE = 3
+
 const SCREEN_SIZE = {
   WIDTH: 40,
   HEIGHT: 20,
@@ -22,4 +24,5 @@ export {
   MAX_STEP,
   SCREEN_SIZE,
   OBJECTS,
+  MAPS_SIZE,
 }

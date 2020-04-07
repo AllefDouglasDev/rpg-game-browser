@@ -5,7 +5,7 @@ import { useSelector, useDispatch, useStore } from 'react-redux'
 import { Creators as CharacterCreators } from '../../store/ducks/character'
 import { Creators as EnemiesCreators } from '../../store/ducks/enemies'
 import { Creators as MapCreators } from '../../store/ducks/map'
-import { SPRITE_SIZE, DIRECTION, SCREEN_SIZE } from '../../utils/constants'
+import { SPRITE_SIZE, DIRECTION, SCREEN_SIZE, MAPS_SIZE } from '../../utils/constants'
 
 export default function Move({ onKeydown }) {
   const store = useStore()
@@ -54,7 +54,8 @@ export default function Move({ onKeydown }) {
   async function goToNextLevel() {
     dispatch(CharacterCreators.restart())
     dispatch(EnemiesCreators.restart())
-    dispatch(MapCreators.setMapId(store.getState().map.mapId + 1))
+    const nextMap = store.getState().map.mapId + 1
+    dispatch(MapCreators.setMapId(nextMap <= MAPS_SIZE ? nextMap : 1))
   }
 
   return <div />
