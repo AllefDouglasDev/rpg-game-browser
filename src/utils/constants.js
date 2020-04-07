@@ -1,3 +1,5 @@
+import OBJECTS from './objects'
+
 const SPRITE_SIZE = 32
 
 const DIRECTION = {
@@ -10,8 +12,8 @@ const DIRECTION = {
 const MAX_STEP = 3
 
 const SCREEN_SIZE = {
-  WIDTH: 36,
-  HEIGHT: 18,
+  WIDTH: 40,
+  HEIGHT: 20,
 }
 
 export {
@@ -19,4 +21,5 @@ export {
   DIRECTION,
   MAX_STEP,
   SCREEN_SIZE,
+  OBJECTS,
 }

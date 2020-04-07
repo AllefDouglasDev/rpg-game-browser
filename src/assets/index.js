@@ -1,5 +1,9 @@
 import character from './character'
+import map from './map'
+import enemies from './enemies'
 
 export {
-  character
+  map,
+  character,
+  enemies,
 }

@@ -13,7 +13,6 @@ export default function Character() {
 
   const offset = { top: 0, left: 0 }
 
-
   useEffect(() => {
     if (facing.current === facing.previous) {
       setStep(prevState => (prevState < MAX_STEP - 1 ? prevState + 1: 0))
@@ -33,7 +32,8 @@ export default function Character() {
     <>
       <div 
         style={{
-          position: 'relative',
+          position: 'absolute',
+          zIndex: 5,
           top: position.top,
           left: position.left,
           width: SPRITE_SIZE,

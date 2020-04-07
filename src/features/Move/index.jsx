@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import useEventListener from '@use-it/event-listener'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -9,16 +9,22 @@ export default function Move({ onKeydown }) {
   const dispatch = useDispatch()
   const { position } = useSelector(state => state.character)
 
+  const [waitingAnimation, setWaitingAnimation] = useState(false)
+
   useEventListener('keydown', handleKeydown)
 
-  function handleKeydown({ code }) {
-    if (code.indexOf('Arrow') === -1) return
+  function handleKeydown({ code, ctrlKey }) {
+    if (code.indexOf('Arrow') === -1 || waitingAnimation) return
 
     const direction = DIRECTION[code.replace('Arrow', '').toUpperCase()]
 
     dispatchMove(direction)
 
     if (onKeydown) onKeydown(direction)
+
+    const animationDelay = (ctrlKey) ? 50 : 100
+    setWaitingAnimation(true)
+    setTimeout(() => setWaitingAnimation(false), animationDelay)
   }
 
   function dispatchMove(direction) {
