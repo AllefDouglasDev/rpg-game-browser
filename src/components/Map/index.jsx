@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { Creators } from '../../store/ducks/enemies'
 import { SPRITE_SIZE, SCREEN_SIZE } from '../../utils/constants'
-import { tiles } from '../../maps/1'
-import { enemies } from '../../assets'
+import { tiles, enemies } from '../../maps/1'
+import { enemies as enemiesAssets } from '../../assets'
 
 import MapRow from './MapRow'
 
@@ -10,6 +12,15 @@ import Character from '../Character'
 import Enemie from '../Enemie'
 
 export default function Map() {
+
+  const dispatch = useDispatch()
+
+  const enemiesLength = useSelector(state => state.enemies.length)
+
+  useEffect(() => {
+    dispatch(Creators.setEnemies(enemies))
+  }, [dispatch])
+
   return (
     <div
       style={{
@@ -23,18 +34,29 @@ export default function Map() {
     >
       {tiles.map((row, i) => <MapRow key={i} row={row}/>)}
       <Character />
-      <Enemie
-        id={1}
-        initialPosition={{ top: 0, left: SPRITE_SIZE * 4 }}
+
+      {enemiesLength > 0 && enemies.map((enemie, id) => (
+        <Enemie
+          key={id}
+          id={id}
+          maxStep={enemie.maxStep}
+          sprite={enemiesAssets[enemie.name]}
+          vertical={enemie.vertical}
+        />
+      ))}
+
+      {/* <Enemie
+        initialPosition={{ top: SPRITE_SIZE * 5, left: SPRITE_SIZE * 7 }}
+        maxStep={3}
+        sprite={enemiesAssets.lpcwanddemo}
+        vertical
+      /> */}
+
+      {/* <Enemie
+        initialPosition={{ top: SPRITE_SIZE * 7, left: SPRITE_SIZE * 9 }}
         maxStep={4}
-        sprite={enemies.bat}
-      />
-      <Enemie
-        id={2}
-        initialPosition={{ top: SPRITE_SIZE * 5, left: SPRITE_SIZE * 9 }}
-        maxStep={4}
-        sprite={enemies.bat}
-      />
+        sprite={enemiesAssets.bat}
+      /> */}
     </div>
   )
 }
