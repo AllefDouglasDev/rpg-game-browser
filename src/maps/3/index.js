@@ -36,21 +36,21 @@ export const enemies = [
     maxStep: 4,
     position: { top: SPRITE_SIZE * 7, left: SPRITE_SIZE * 2 },
     vertical: false,
-    animationTime: 40,
+    animationTime: 600,
   },
   {
     name: 'bat',
     maxStep: 4,
     position: { top: SPRITE_SIZE * 5, left: SPRITE_SIZE * 12 },
     vertical: false,
-    animationTime: 40,
+    animationTime: 600,
   },
   {
     name: 'bat',
     maxStep: 4,
     position: { top: SPRITE_SIZE * 4, left: SPRITE_SIZE * 6 },
     vertical: true,
-    animationTime: 40,
+    animationTime: 600,
     offset: { top: 0, left: 0 }
   }
 ]
